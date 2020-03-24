@@ -17,10 +17,17 @@ trait WithSandbox
 {
     /** @var Sandbox */
     protected $sandbox;
-    
+
     /** @var array */
     protected $messages = [
-        Error::PARSER_ERROR => 'Невозможно выполнить код, синтаксис содержит ошибки',
+        Error::PARSER_ERROR  => 'Невозможно выполнить код, синтаксис содержит ошибки',
+        Error::CAST_ERROR    => 'Запрещено использовать преобразование типов (casts), например (int), (float)',
+        Error::CLOSURE_ERROR => 'Запрещено использовать замыкания/анонимные функции',
+        Error::BYREF_ERROR   => 'Запрещено использовать ссылочные переменные',
+        
+        Error::GENERATOR_ERROR => 'Запрещено использовать генераторы',
+        Error::GLOBALS_ERROR   => 'Запрещено использовать глобальные переменные (global)',
+        Error::INCLUDE_ERROR   => 'Запрещено подключать другие файлы',
     ];
 
     /**
