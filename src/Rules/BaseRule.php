@@ -52,8 +52,7 @@ class BaseRule implements Rule
     public function run($code, $stopOnFirstFall = true, $methodsPrefix = 'test'): array
     {
         try {
-            $class = new ReflectionClass(static::class);
-            $methods = $class->getMethods(ReflectionMethod::IS_PUBLIC);
+            $methods = $this->getRuleMethodsList();
         } catch (ReflectionException $exception) {
             return [];
         }
@@ -95,5 +94,15 @@ class BaseRule implements Rule
         if (! $condition) {
             throw new ValidationException($message ?: 'Возникла ошибка при проверке кода', $points);
         }
+    }
+
+    /**
+     * @return ReflectionMethod[]
+     * @throws ReflectionException
+     */
+    protected function getRuleMethodsList()
+    {
+        $class = new ReflectionClass(static::class);
+        return $class->getMethods(ReflectionMethod::IS_PUBLIC);
     }
 }
