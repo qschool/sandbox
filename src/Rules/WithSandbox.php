@@ -17,7 +17,7 @@ trait WithSandbox
 {
     /** @var Sandbox */
     protected $sandbox;
-
+    
     /** @var array */
     protected $messages = [
         Error::PARSER_ERROR  => 'Невозможно выполнить код, синтаксис содержит ошибки',
@@ -28,6 +28,7 @@ trait WithSandbox
         Error::GENERATOR_ERROR => 'Запрещено использовать генераторы',
         Error::GLOBALS_ERROR   => 'Запрещено использовать глобальные переменные (global)',
         Error::INCLUDE_ERROR   => 'Запрещено подключать другие файлы',
+        1000 => 'Критическая ошибка выполнения кода: :message',
     ];
 
     /**
@@ -58,6 +59,10 @@ trait WithSandbox
     {
         try {
             return $this->sandbox->run($code);
+        } catch (\Error $error) {
+            
+            throw new ValidationException(str_replace(':message', $error->getMessage(), $this->messages[1000]));
+            
         } catch (Error $exception) {
             
             if (isset($this->messages[$exception->getCode()])) {
